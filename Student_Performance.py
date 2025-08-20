@@ -12,7 +12,7 @@ db = client['Student']
 collection = db["Student-Prediction"]
 
 def load_model():
-    with open("DataScience\Maths\Student-Performance-App\Student_lr_final_model.pkl", "rb") as file:
+    with open("DataScience\Student-Performance-App\Student_Performance.py", "rb") as file:
         model,scaler,le = pickle.load(file)
     return model,scaler,le
 
@@ -55,5 +55,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
