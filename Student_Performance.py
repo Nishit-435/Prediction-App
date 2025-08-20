@@ -3,6 +3,13 @@ import pandas as pd
 import numpy as np
 import pickle
 from sklearn.preprocessing import StandardScaler, LabelEncoder
+from pymongo.mongo_client import MongoClient
+from pymongo.server_api import ServerApi
+
+uri = "mongodb+srv://nishitdb:Cnd_Cdr_423#152@cluster0.7opr5pi.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+client = MongoClient(uri, server_api=ServerApi('1'))
+db = client['Student']
+collection = db["Student-Prediction"]
 
 def load_model():
     with open("DataScience\Maths\Student-Performance-App\Student_lr_final_model.pkl", "rb") as file:
@@ -42,6 +49,9 @@ def main():
         }
         prediction = predict_data(user_data)
         st.success(f"Your Prediction Result Is {prediction}")
+        user_data["Prediction"] = round(float(prediction[0]), 2)
+        user_data = {key: int(value) if isinstance(value, np.integer) else float(value) if isinstance(value, np.floating) else value for key, value in user_data.items()}
+        collection.insert_one(user_data)
 
 if __name__ == "__main__":
     main()
